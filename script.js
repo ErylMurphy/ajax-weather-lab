@@ -8,18 +8,16 @@ const getWeather = (zipcode) => {
         return response.json();
     })
     .then(json => {
-        const result = json[0];
         
         const weather2day = {
             city: json.name,
             temp: Math.round(json.main.temp - 273.15),
             main: json.weather[0].main,
-            // description: json.weather[0].description,
             mintemp: json.main.temp_min - 273.15,
             maxtemp: json.main.temp_max - 273.15,
             clouds: json.clouds.all
         }
-        $('.city').html(`If you are in ${weather2day.city}, then the temperature is ${weather2day.temp} and you should prepare for ${weather2day.main}. At the lowest, the temperature will be ${weather2day.mintemp}, and ${weather2day.maxtemp} at the highest. The cloud situation is ${weather2day.clouds} (whatever that means).`);
+        $('.city').html(`If you are in ${weather2day.city}, then the temperature is ${weather2day.temp}°C and you should prepare for ${weather2day.main}. At the lowest, the temperature will be ${weather2day.mintemp}°C, and ${weather2day.maxtemp}°C at the highest. The cloud situation is ${weather2day.clouds} (whatever that means).`);
 
     
         console.log(json);
@@ -47,20 +45,6 @@ const getWeather = (zipcode) => {
         else {
             $('body').css('background-image', 'url("https://j.gifs.com/YvmkKO.gif")');
         }
-
-        // clear sky
-        //snow
-
-
-
-
-
-
-
-
-
-
-
     }   
 );
 return weather2day 
