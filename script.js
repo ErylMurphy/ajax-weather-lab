@@ -1,24 +1,76 @@
-const getWeather = (zipcode) => {
-    let zipcode = $('#zipcode').val;
 
-    return fetch(`http://api.openweathermap.org/data/2.5/weather?zip=10065,us&appid=80e3ec7edbde84117ee242d3255da6c2`,)
+const getWeather = (zipcode) => {
+    let inputZipcode = $('#zipcode').val();    
     
+    
+    return fetch(`http://api.openweathermap.org/data/2.5/weather?q=${inputZipcode},us&appid=${config.weatherAPIkey}`)
     .then(response => {
         return response.json();
     })
     .then(json => {
+        const result = json[0];
+        
         const weather2day = {
-            description: , 
-            temp: ,
+            city: json.name,
+            temp: Math.round(json.main.temp - 273.15),
+            main: json.weather[0].main,
+            // description: json.weather[0].description,
+            mintemp: json.main.temp_min - 273.15,
+            maxtemp: json.main.temp_max - 273.15,
+            clouds: json.clouds.all
         }
-    }
-    );
+        $('.city').html(`If you are in ${weather2day.city}, then the temperature is ${weather2day.temp} and you should prepare for ${weather2day.main}. At the lowest, the temperature will be ${weather2day.mintemp}, and ${weather2day.maxtemp} at the highest. The cloud situation is ${weather2day.clouds} (whatever that means).`);
+
+    
+        console.log(json);
+        if (weather2day.main === 'Thunderstorm' && weather2day.maxtemp > 25) {
+            $('body').css('background-image', 'url("https://media.giphy.com/media/HmTLatwLWpTQk/giphy.gif")');
+        }
+        else if (weather2day.main === 'Thunderstorm') {
+            $('body').css('background-image', 'url("https://media.giphy.com/media/8xY1YYpEZ4dws/giphy.gif")'); 
+        }
+        else if (weather2day.main === 'Rain') {
+            $('body').css('background-image', 'url("https://media.giphy.com/media/ZPYun4MuPaCdy/giphy.gif")');
+        }
+        else if (weather2day.main === 'Snow') {
+            $('body').css('background-image', 'url("https://media.giphy.com/media/l2Sq3YeO2DEyVz8ha/giphy.gif")');
+        }
+        else if (weather2day.main === 'Clear') {
+            $('body').css('background-image', 'url("https://media.giphy.com/media/baHEVy2cWw7SM/giphy.gif")');
+        }
+        else if (weather2day.main === 'Clear' && weather2day.maxtemp > 30) {
+            $('body').css('background-image', 'url("https://media.giphy.com/media/xT0wlvGLHmojbeu5vq/giphy.gif")')
+        }
+        else if (weather2day.main === 'Clouds') {
+            $('body').css('background-image', 'url("https://media.giphy.com/media/3o6EhOYMhOTANYgHMk/giphy.gif")');
+        }
+        else {
+            $('body').css('background-image', 'url("https://j.gifs.com/YvmkKO.gif")');
+        }
+
+        // clear sky
+        //snow
 
 
+
+
+
+
+
+
+
+
+
+    }   
+);
+return weather2day 
 };
 
-getWeather();
+$('.submit').on('click', () => {
+    console.log('inside click handler')
+    getWeather();
+})
 
-$('button').click()
 
-    // return fetch(`http://api.openweathermap.org/data/2.5/weather?zip=${zipcode},us&appid=${config.apikey}`,)
+
+
